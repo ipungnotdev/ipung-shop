@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UnoXStore</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<h1>UnoXStore</h1>
+
+<!-- TAB -->
+<div class="tabs">
+  <button onclick="showTab('sewa')" id="btnSewa" class="active">SEWA BOT</button>
+  <button onclick="showTab('script')" id="btnScript">SCRIPT</button>
+</div>
+
+<!-- SEWA -->
+<div id="sewa" class="container">
+
+  <div class="card">
+    <h3>1 Bulan</h3>
+    <p>Rp 15.000</p>
+    <button onclick="order('Sewa 1 Bulan',15000)">ORDER</button>
+  </div>
+
+  <div class="card">
+    <h3>2 Bulan</h3>
+    <p>Rp 30.000</p>
+    <button onclick="order('Sewa 2 Bulan',30000)">ORDER</button>
+  </div>
+
+</div>
+
+<!-- SCRIPT -->
+<div id="script" class="container" style="display:none;">
+
+  <div class="card">
+    <h3>Script Mezuki</h3>
+    <p>Rp 70.000</p>
+    <button onclick="order('Script Mezuki',70000)">ORDER</button>
+  </div>
+
+</div>
+
+<!-- MODAL FORM -->
+<div class="modal" id="modal">
+  <div class="box">
+    <h3>Isi Data</h3>
+    <input id="nama" placeholder="Nama">
+    <input id="wa" placeholder="No WhatsApp">
+    <input id="group" placeholder="Link Grup">
+    <button onclick="lanjut()">Lanjut</button>
+  </div>
+</div>
+
+<!-- QRIS -->
+<div class="modal" id="payment">
+  <div class="box">
+    <h3>Scan QRIS</h3>
+
+    <img src="qris.jpg" width="200">
+
+    <input type="file">
+
+    <p style="font-size:12px;color:gray;">
+      Setelah klik kirim, kirim bukti pembayaran di WhatsApp
+    </p>
+
+    <button onclick="kirim()">Kirim ke Admin</button>
+  </div>
+</div>
+
+<script>
+
+let produk = "";
+let harga = 0;
+
+function showTab(tab){
+  document.getElementById("sewa").style.display = "none";
+  document.getElementById("script").style.display = "none";
+
+  document.getElementById(tab).style.display = "grid";
+
+  document.getElementById("btnSewa").classList.remove("active");
+  document.getElementById("btnScript").classList.remove("active");
+
+  if(tab === "sewa"){
+    document.getElementById("btnSewa").classList.add("active");
+  } else {
+    document.getElementById("btnScript").classList.add("active");
+  }
+}
+
+function order(nama, hrg){
+  produk = nama;
+  harga = hrg;
+  document.getElementById("modal").style.display = "flex";
+}
+
+function lanjut(){
+  document.getElementById("modal").style.display = "none";
+  document.getElementById("payment").style.display = "flex";
+}
+
+function kirim(){
+  let nama = document.getElementById("nama").value;
+  let wa = document.getElementById("wa").value;
+  let group = document.getElementById("group").value;
+
+  if(!nama || !wa || !group){
+    alert("Lengkapi data dulu!");
+    return;
+  }
+
+  let text = `ORDER SEWA BOT
+
+Nama: ${nama}
+No WA: ${wa}
+Link Grup: ${group}
+Produk: ${produk}
+Harga: Rp ${harga}
+
+Saya sudah bayar via QRIS, berikut bukti saya.`
+
+  let url = `https://wa.me/6285198959920?text=${encodeURIComponent(text)}`
+
+  window.open(url, "_blank")
+}
+
+</script>
+
+</body>
+  </html>
